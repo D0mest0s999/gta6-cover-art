@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vice Grid Cover Studio — 9-panel multi-photo covers, 6 grades, 9 layouts</title>
+<meta name="description" content="Turn your photos into GTA-style multi-panel poster covers: 9 layouts, 6 sunset/neon grades, per-panel crop, halftone + bold lettering, export all 3 post sizes at once. Fully offline.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">VG</span>
+      <div>
+        <h1>Vice Grid <span>Cover Studio</span></h1>
+        <p class="tagline">9-panel multi-photo covers · 6 grades · 9 layouts · per-panel crop · all 3 post sizes at once</p>
+      </div>
+    </div>
+    <ol class="steps">
+      <li><b>1</b> Add a photo</li>
+      <li><b>2</b> Pick a layout</li>
+      <li><b>3</b> Export PNG</li>
+    </ol>
+  </header>
+
+  <main class="workspace">
+    <section class="preview-pane" aria-label="Live preview">
+      <div class="preview-head">
+        <div class="preview-meta">
+          <strong id="layoutName">Nine Grid</strong>
+          <span>·</span><span id="gradeName">Vice Sunset</span>
+          <span>·</span><span id="sizeName">1080 × 1080 · Post</span>
+        </div>
+        <button id="shuffleBtn" type="button" class="ghost-btn">🎲 Surprise me</button>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="preview" width="960" height="960" aria-label="Cover preview — click a panel to select it, drag to move the photo, scroll to zoom"></canvas>
+        <p class="canvas-hint">Click a panel to select it · drag to move the photo · scroll to zoom</p>
+      </div>
+      <div id="sizeTabs" class="size-tabs" role="tablist" aria-label="Post size"></div>
+      <div class="export-row">
+        <button id="exportBtn" type="button" class="export-btn">⬇ Export PNG</button>
+        <button id="exportAllBtn" type="button" class="export-all-btn">⬇⬇ Export ALL 3 sizes at once</button>
+      </div>
+      <p id="statusLine" class="status" role="status">Sample photos loaded — pick a layout, then export.</p>
+    </section>
+
+    <aside class="controls" aria-label="Cover controls">
+      <section class="control-group">
+        <h2>Photos</h2>
+        <div id="photoThumbs" class="thumbs"></div>
+        <label class="upload-btn" for="uploadInput">＋ Upload your photos…</label>
+        <input id="uploadInput" type="file" accept="image/*" multiple hidden>
+        <button id="fillAllBtn" type="button" class="ghost-btn wide">Fill every panel with the selected photo</button>
+      </section>
+
+      <section class="control-group">
+        <h2>Layout <span class="count-badge">9</span></h2>
+        <div id="layoutGrid" class="layout-grid"></div>
+      </section>
+
+      <section class="control-group">
+        <h2>Colour grade <span class="count-badge">6</span></h2>
+        <div id="gradeRow" class="grade-row"></div>
+      </section>
+
+      <section class="control-group">
+        <h2>Caption</h2>
+        <label class="field-label" for="titleInput">Title — big bold lettering</label>
+        <input id="titleInput" type="text" value="NEON SHORE" maxlength="40" autocomplete="off">
+        <label class="field-label" for="subtitleInput">Subtitle — neon script</label>
+        <input id="subtitleInput" type="text" value="golden hour · fast cars" maxlength="60" autocomplete="off">
+        <label class="field-label">Lettering style</label>
+        <div id="letteringRow" class="chip-row"></div>
+      </section>
+
+      <section class="control-group">
+        <h2 id="panelLabel">Panel 1 of 9 — Nine Grid</h2>
+        <p class="panel-photo">Photo in this panel: <strong id="panelPhotoLabel">—</strong></p>
+        <label class="field-label" for="zoomRange">Zoom — <span id="zoomVal">112%</span></label>
+        <input id="zoomRange" type="range" min="1" max="3" step="0.01" value="1.12">
+        <label class="field-label" for="panXRange">Move left / right</label>
+        <input id="panXRange" type="range" min="-1" max="1" step="0.01" value="0">
+        <label class="field-label" for="panYRange">Move up / down</label>
+        <input id="panYRange" type="range" min="-1" max="1" step="0.01" value="0">
+      </section>
+
+      <section class="control-group">
+        <h2>Finish</h2>
+        <label class="check"><input id="frameChk" type="checkbox" checked> White poster frame</label>
+        <label class="check"><input id="grainChk" type="checkbox" checked> Film grain</label>
+        <label class="check"><input id="vignetteChk" type="checkbox" checked> Vignette</label>
+        <label class="check"><input id="badgeChk" type="checkbox" checked> Badge ribbon</label>
+        <label class="field-label" for="heatRange">Heat meter — <span id="heatVal">★★★★☆</span></label>
+        <input id="heatRange" type="range" min="1" max="5" step="1" value="4">
+      </section>
+
+      <p class="fineprint">Runs fully offline — your photos never leave your machine. Sample photos are AI-generated fictional people. Original design: no Rockstar logo, artwork or fonts. Lettering: Anton &amp; Pacifico (SIL Open Font License, files under <code>fonts/</code>).</p>
+    </aside>
+  </main>
+</div>
+
+<!-- Shot scene: a full-window exported cover, used for screenshots. -->
+<canvas id="shotCanvas" width="1920" height="1080" hidden></canvas>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
